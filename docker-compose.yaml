@@ -1,11 +1,10 @@
-version: '3.8'
 services:
   web_app:
     image: capsule:0.0.1
     ports:
-      - "5000:5000"
-    command: ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+      - "80:80"
+    command: "flask", "run", "--host=0.0.0.0", "--port=80"
 
   worker:
     image: capsule:0.0.1
-    command: ["python", "checker.py"]
+    command: "python", "checker.py"
