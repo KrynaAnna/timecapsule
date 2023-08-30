@@ -1,7 +1,7 @@
 FROM python:3.11.3-slim-buster
 
 # Create a working directory inside the container
-WORKDIR /capsule
+WORKDIR /timecapsule
 
 # Copy all the files from the current directory into the container's working directory
 COPY . .
@@ -16,4 +16,4 @@ ENV FLASK_APP=main.py
 EXPOSE 80
 
 # Set the command to run your Flask application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=80"]
+CMD ["flask", "run", "--host=0.0.0.0"]

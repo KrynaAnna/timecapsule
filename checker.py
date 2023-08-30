@@ -4,24 +4,24 @@ from datetime import datetime
 
 import pandas as pd
 import pytz
+import schedule
 
 from mail import Mail
 
 
-# Define the target date and current date
-date_yesterday = datetime.strptime('2022-11-03', '%Y-%m-%d').date()
-date_today = datetime.now(pytz.timezone('Canada/Eastern')).date()
+def daily_task():
+    # Define the target date and current date
+    date_today = datetime.now(pytz.timezone('Canada/Eastern')).date()
 
-# Define paths
-current_dir = os.path.abspath(os.path.dirname(__file__))
-instance_folder = os.path.join(current_dir, 'instance')
-db_file_path = os.path.join(instance_folder, 'data.db')
+    # Define paths
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    instance_folder = os.path.join(current_dir, 'instance')
+    db_file_path = os.path.join(instance_folder, 'data.db')
 
-# Load data from the database table
-database = pd.read_sql_table('data', f"sqlite:///{db_file_path}")
+    # Load data from the database table
+    database = pd.read_sql_table('data', f"sqlite:///{db_file_path}")
 
-# Main loop to process scheduled emails
-while date_today != date_yesterday:
+    # Main loop to process scheduled emails
     for i in range(len(database)):
         if database['date_future'][i].date() == date_today:
             # Prepare email parameters
@@ -69,8 +69,10 @@ while date_today != date_yesterday:
             mail = Mail(params=email_params)
             mail.send_message()
 
-    # Update date for the next iteration
-    date_yesterday = date_today
 
-    # Sleep for 12 hours before the next iteration
-    time.sleep(43200)
+# Schedule the daily_task function to run once per day at a specific time (e.g., 2:00 PM)
+schedule.every().day.at("00:00").do(daily_task)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)

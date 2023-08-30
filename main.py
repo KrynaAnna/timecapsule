@@ -14,7 +14,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 # Initialize Flask app
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SERVER_NAME'] = '64.229.205.180'
 app.config['SECRET_KEY'] = '8BYkEfBA1O6donzWlSihBXox7C0sKR6b'
 Bootstrap(app)
 
@@ -81,4 +80,4 @@ with app.app_context():
         return render_template("success.html")
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, port=80)
